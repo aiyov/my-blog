@@ -11,8 +11,8 @@ module.exports = {
     app: './src/index.js'
   },
   output: {
-    filename: '[name].bundle.[chunkhash:7].js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: 'js/[name].bundle.[chunkhash:7].js',
+    path: path.resolve(__dirname, '../dist'),
     publicPath: './'
   },
   optimization: {
@@ -23,7 +23,34 @@ module.exports = {
         sourceMap: true // set to true if you want JS source maps
       }),
       new OptimizeCSSAssetsPlugin({})
-    ]
+    ],
+    splitChunks: {
+      chunks: 'all',
+      minSize: 30000,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: '~',
+      name: true,
+      cacheGroups: {
+        vendors: {
+          name: 'chunk-vender',
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        commons: {
+          name: 'chunk-common',
+          chunks: 'initial',
+          minChunks: 2
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    }
   },
   module: {
     rules: [
