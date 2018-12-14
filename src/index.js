@@ -1,14 +1,10 @@
-import './c.js';
-import './b.js';
-import './a.js';
-import './index.css';
 import React from 'react';
-import ReactDom from 'react-dom';
-import App from './app.js';
+import App from './App.js';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom'
 
-const ele = '<div>123456789</div>'
-
-ReactDom.render(
-    <App />,
-  document.getElementById('root')
-)
+ReactDOM.render((
+  <BrowserRouter>
+      <App/>
+  </BrowserRouter>
+), document.getElementById('root'))
