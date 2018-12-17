@@ -6,43 +6,46 @@ import ReactDOMServer from 'react-dom/server';
 import {StaticRouter} from 'react-router-dom';
 import App from '../src/App.js';
 import serve from 'koa-static';
+import Helmet from 'react-helmet';
 import staticCache from 'koa-static-cache';
-import staticPath from '../dist/manifest.json'
+import staticPath from '../dist/manifest.json';
+
 const router = require('koa-router')();
 
 const app = new koa();
 
 app.use(staticCache(path.resolve(__dirname, '../dist'), {
-    maxAge: 24 * 60 * 60
+  maxAge: 24 * 60 * 60
 }))
 
 app.use(router.routes())
 
-router.get('*',(ctx, next)=>{
-    console.log(ctx.req.url)
-    next()
+router.get('*', (ctx, next) => {
+  console.log(ctx.req.url)
+  next()
 })
 
 
 app.use((ctx, next) => {
-    console.log(123)
-    console.log(ctx.req.url)
-    if (ctx.req.url.startsWith('/js/') || ctx.req.url.startsWith('/favicon.ico')) {
-        return next()
-    }
-    const context = {}
-    const html = ReactDOMServer.renderToString(
-        <StaticRouter location={ctx.req.url} context={context}>
-            <App/>
-        </StaticRouter>
-    )
-    ctx.body = `<!DOCTYPE html>
+  console.log(123)
+  console.log(ctx.req.url)
+  if (ctx.req.url.startsWith('/js/') || ctx.req.url.startsWith('/favicon.ico')) {
+    return next()
+  }
+  const context = {}
+  const html = ReactDOMServer.renderToString(
+    <StaticRouter location={ctx.req.url} context={context}>
+      <App/>
+    </StaticRouter>
+  )
+  const helmet = Helmet.renderStatic();
+  ctx.body = `<!DOCTYPE html>
     <html lang="en">
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
             <meta name="theme-color" content="#000000">
-            <title>react-ssr</title>
+            <title>${helmet.title.toString()}</title>
         </head>
         <body>
             <noscript>
@@ -61,6 +64,6 @@ console.log(path.resolve(__dirname, '../dist/'))
 app.use(serve(path.resolve(__dirname, '../dist/')))
 
 app.listen("9000", function () {
-    console.log("open Browser http://localhost:9000");
+  console.log("open Browser http://localhost:9000");
 });
 
