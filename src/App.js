@@ -14,7 +14,7 @@ export default class App extends React.Component {
       <div>
         <Link to="/name">姓名</Link>
         <Link to="/age">年龄</Link>
-          <span onClick={this.clickBtn}>点击我</span>
+          <span onClick={this.clickBtn}>点击我13</span>
         {routers.map((route) => (
           <Route {...route} key={route.path} />
         ))}
