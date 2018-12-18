@@ -7,7 +7,6 @@ export default class App extends React.Component {
     super(props)
   }
     clickBtn() {
-      history.pushState('','','/test')
       alert(123)
     }
   render() {

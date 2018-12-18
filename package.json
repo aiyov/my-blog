@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "set NODE_ENV=test&&nodemon --exec babel-node server/index.js",
-    "build": "webpack --config config/webpack.config.js",
+    "server": "set NODE_ENV=production&&nodemon --exec babel-node server/index.js",
+    "build": "webpack --config config/webpack.config.prd.js",
     "dev": "webpack-dev-server --config config/webpack.config.dev.js",
+    "dev:server": "set NODE_ENV=development&&nodemon --exec babel-node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "aiyov",
@@ -38,7 +39,8 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.27.1",
     "webpack-copy-plugin": "0.0.4",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.10",
+    "webpack-merge": "^4.1.5"
   },
   "devDependencies": {
     "webpack-assets-manifest": "^3.1.1",
