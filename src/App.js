@@ -6,15 +6,15 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
   }
-    clickBtn() {
-      alert(123)
-    }
+  clickBtn() {
+    alert(123)
+  }
   render() {
     return (
       <div>
         <Link to="/name">姓名</Link>
         <Link to="/age">年龄</Link>
-          <span onClick={this.clickBtn}>点击我13</span>
+          <span onClick={this.clickBtn}>点击</span>
         {routers.map((route) => (
           <Route {...route} key={route.path} />
         ))}
