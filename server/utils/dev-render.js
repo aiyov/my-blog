@@ -4,10 +4,18 @@ import ReactDOMServer from 'react-dom/server';
 import {StaticRouter} from 'react-router-dom';
 import Helmet from 'react-helmet';
 import Router from 'koa-router';
+import { Provider } from 'react-redux';
 import App from '../../src/App.js';
+import configStore from '../../store/store/index.js';
+import {changeColor} from '../../store/actions/paint.js';
 
 const router = Router();
-//todo router 404 偶现
+
+const store = configStore();
+
+const preloadedState = store.getState();
+
+store.dispatch(changeColor('#000000'))
 
 router.get('*',async (ctx, next)=>{
   if(ctx.req.url.startsWith('/static/')) {
@@ -31,7 +39,9 @@ async function devRender(ctx) {
     const context = {}
     const html = ReactDOMServer.renderToString(
       <StaticRouter location={ctx.req.url} context={context}>
-        <App/>
+        <Provider store={store}>
+          <App />
+        </Provider>
       </StaticRouter>
     )
     const helmet = Helmet.renderStatic();
@@ -49,6 +59,9 @@ async function devRender(ctx) {
               You need to enable JavaScript to run this app.
               </noscript>
               <div id="root">${html}</div>
+              <script>
+                window.__INITIAL_STATE__ = ${JSON.stringify(preloadedState)}
+              </script>
               <script src="${staticPath['app.js']}"></script>
           </body>
       </html>`
