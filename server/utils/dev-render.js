@@ -4,10 +4,12 @@ import ReactDOMServer from 'react-dom/server';
 import {StaticRouter} from 'react-router-dom';
 import Helmet from 'react-helmet';
 import Router from 'koa-router';
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 import App from '../../src/App.js';
 import configStore from '../../store/store/index.js';
 import {changeColor} from '../../store/actions/paint.js';
+import {matchRoutes} from 'react-router-config';
+import routes from '../../src/routers.js';
 
 const router = Router();
 
@@ -15,34 +17,36 @@ const store = configStore();
 
 const preloadedState = store.getState();
 
-store.dispatch(changeColor('#000000'))
+// store.dispatch(changeColor('#000000'))
 
-router.get('*',async (ctx, next)=>{
-  if(ctx.req.url.startsWith('/static/')) {
-    return next()
-  }
-  await devRender(ctx)
+router.get('*', async (ctx, next) => {
+    if (ctx.req.url.startsWith('/static/')) {
+        return next()
+    }
+    const matchedRoutes = matchRoutes(routes, ctx.req.url);
+    console.log(matchedRoutes.length); /*todo 匹配页面提前获取数据*/
+    await devRender(ctx)
 })
 
 function getStaticPath() {
-  return new Promise((resolve, reject) => {
-    axios.get('http://localhost:3111/manifest.json')
-      .then(res => {
-        resolve(res.data);
-      })
-      .catch(reject)
-  })
+    return new Promise((resolve, reject) => {
+        axios.get('http://localhost:3111/manifest.json')
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(reject)
+    })
 }
 
 async function devRender(ctx) {
-  const staticPath = await getStaticPath();
+    const staticPath = await getStaticPath();
     const context = {}
     const html = ReactDOMServer.renderToString(
-      <StaticRouter location={ctx.req.url} context={context}>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </StaticRouter>
+        <StaticRouter location={ctx.req.url} context={context}>
+            <Provider store={store}>
+                <App/>
+            </Provider>
+        </StaticRouter>
     )
     const helmet = Helmet.renderStatic();
     ctx.body = `<!DOCTYPE html>
