@@ -3,6 +3,7 @@ import Name from '../src/view/name/name.js';
 import Age from '../src/view/age/age.js';
 import AgeDetail from '../src/view/age/agedetail.js';
 import Root from '../src/view/root/index.js';
+import NotFind from './view/notfind/index.js';
 
 const routes = [
   {
@@ -26,6 +27,9 @@ const routes = [
             data: AgeDetail.getData,
           }
         ]
+      },
+      {
+        component: NotFind
       }
     ]
   }

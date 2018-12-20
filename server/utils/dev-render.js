@@ -15,8 +15,6 @@ const router = Router();
 
 var store = null;
 
-// store.dispatch(changeColor('#000000'))
-
 router.get('*', async (ctx, next) => {
   if (ctx.req.url.startsWith('/static/')) {
     return next()
@@ -37,7 +35,6 @@ router.get('*', async (ctx, next) => {
 })
 
 async function devRender(ctx) {
-  console.log(JSON.stringify(store.getState()))
   const staticPath = await getStaticPath();
   const context = {}
   const html = ReactDOMServer.renderToString(
@@ -47,6 +44,9 @@ async function devRender(ctx) {
       </Provider>
     </StaticRouter>
   )
+  if(context.status === 404) {
+    ctx.status = 404
+  };
   const helmet = Helmet.renderStatic();
   ctx.body = `<!DOCTYPE html>
       <html lang="en">
