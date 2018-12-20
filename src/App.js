@@ -8,11 +8,6 @@ class AppShow extends React.Component {
     constructor(props) {
         super(props)
     }
-
-    clickBtn() {
-        alert(123)
-    }
-
     render() {
         return (
             renderRoutes(routers)

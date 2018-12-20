@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 const preloadedState = window.__INITIAL_STATE__;
 console.log(preloadedState)
 
-const store = configStore();
+const store = configStore(preloadedState);
 
 ReactDOM.hydrate((
   <BrowserRouter>

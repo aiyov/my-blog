@@ -1,5 +1,7 @@
 import {
   CHANGCOLOR,
+  CHANGAGE,
+  CHANGNAME
 } from '../constants/canvas'
 
 export const changeColor = (color) => {
@@ -8,11 +10,28 @@ export const changeColor = (color) => {
     color
   }
 }
+
+export const changeName = (name) => {
+  return {
+    type: CHANGNAME,
+    name
+  }
+}
+
+export const changeAge = (age) => {
+  return {
+    type: CHANGAGE,
+    age
+  }
+}
 // 异步的action
-export function asyncAdd () {
+export function asyncChangeName (name) {
   return dispatch => {
-    setTimeout(() => {
-      dispatch(minus())
-    }, 2000)
+    return new Promise((resolve, reject)=>{
+      setTimeout(() => {
+        dispatch(changeName(name))
+        reject()
+      },1000)
+    })
   }
 }
