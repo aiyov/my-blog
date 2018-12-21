@@ -11,6 +11,12 @@ const routes = [
     data: Root.getData,
     routes: [
       {
+        path: '/',
+        exact: true,
+        component: Name,
+        data: Name.getData
+      },
+      {
         path: '/name/',
         exact: true,
         component: Name,

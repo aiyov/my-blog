@@ -10,8 +10,6 @@ import staticRouter from './utils/dev-render.js';
 const app = new koa();
 const isDev = process.env.NODE_ENV === 'development';
 
-app.use(staticRouter.routes(), staticRouter.allowedMethods())
-
 if (!isDev) {
   app.use(staticCache(path.resolve(__dirname, '../dist'), {
     maxAge: 24 * 60 * 60
@@ -19,6 +17,7 @@ if (!isDev) {
   app.use(serve(path.resolve(__dirname, '../dist/')));
   serverRender(app)
 } else {
+  app.use(staticRouter.routes(), staticRouter.allowedMethods())
   app.use(proxy('/static', {
     target: 'http://localhost:3111',
     logs: true

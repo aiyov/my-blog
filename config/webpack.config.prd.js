@@ -3,7 +3,6 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const utils = require('./utils.js');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const MinCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const baseConfig = require('./webpack.config.base.js');
@@ -42,10 +41,6 @@ module.exports = merge(baseConfig, {
     new CleanWebpackPlugin([path.resolve(__dirname, '../dist')], {
       root: path.resolve(__dirname, '../'),
       verbose: true
-    }),
-    new MinCssExtractPlugin({
-      filename: utils.assetsPath("[name].css"),
-      chunkFilename: utils.assetsPath("[id].css")
     }),
     new webpack.HashedModuleIdsPlugin(),
   ]

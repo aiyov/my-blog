@@ -18,7 +18,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [MinCssExtractPlugin.loader, 'css-loader']
+        use: [MinCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -30,7 +30,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
         use: {
           loader: "babel-loader"
         }
@@ -59,6 +59,10 @@ module.exports = {
     }),
     new WebpackAssetsManifest({
       publicPath: '/'
+    }),
+    new MinCssExtractPlugin({
+      filename: utils.assetsPath("[name].css"),
+      chunkFilename: utils.assetsPath("[id].css")
     }),
     new CopyWebpackPlugin([
       {

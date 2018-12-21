@@ -1,0 +1,12 @@
+{
+  "verbose": false,
+  "env": {
+    "NODE_ENV": "development",
+    "BABEL_ENV": "node"
+  },
+  "watch": ["src", "node_modules"],
+  "ignore": ["static"],
+  "execMap":{
+    "js": "babel-node"
+  }
+}
