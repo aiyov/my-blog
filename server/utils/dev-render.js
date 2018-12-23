@@ -55,6 +55,7 @@ async function devRender(ctx) {
               <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
               <meta name="theme-color" content="#000000">
               <link rel="icon" href="/static/favicon.ico" type="image/vnd.microsoft.icon">
+              <link rel="stylesheet" href="${staticPath['app.css']}">
               ${helmet.title.toString()}
           </head>
           <body>

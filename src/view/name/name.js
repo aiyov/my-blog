@@ -3,6 +3,8 @@ import {Helmet} from "react-helmet";
 import {connect} from 'react-redux';
 import {changeName} from '../../../store/actions/paint.js';
 // import { Button } from 'antd';
+const Button = require('antd').Button;
+// import './name.css';
 
 class NameShow extends React.Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class NameShow extends React.Component {
           <li>张三</li>
           <li>李四</li>
           <li>王麻子</li>
-          {/*<li> <Button type="primary">Primary</Button></li>*/}
+          <li> <Button type="primary">Primary</Button></li>
         </ul>
     )
   }

@@ -1,3 +1,8 @@
+import csshook from 'css-modules-require-hook/preset';
+import assethook from 'asset-require-hook';
+assethook({
+    extensions: ['png', 'jpg']
+});
 import path from 'path';
 import koa from 'koa2';
 import proxy from 'koa-proxies';
