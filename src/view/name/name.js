@@ -2,8 +2,8 @@ import React from 'react';
 import {Helmet} from "react-helmet";
 import {connect} from 'react-redux';
 import {changeName} from '../../../store/actions/paint.js';
-// import { Button } from 'antd';
-const Button = require('antd').Button;
+import { Button } from 'antd';
+// const Button = require('antd').Button;
 // import './name.css';
 
 class NameShow extends React.Component {
