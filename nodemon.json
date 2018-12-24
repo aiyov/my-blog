@@ -7,6 +7,6 @@
   "watch": ["src"],
   "ignore": ["static"],
   "execMap":{
-    "js": "babel-node --ignore=node_modules"
+    "js": "babel-node --ignore=dist"
   }
 }
