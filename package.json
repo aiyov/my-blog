@@ -7,7 +7,7 @@
     "server": "set NODE_ENV=production&&nodemon --exec babel-node server/index.js",
     "build": "webpack --config config/webpack.config.prd.js",
     "dev": "webpack-dev-server --config config/webpack.config.dev.js",
-    "dev:server": "nodemon server/index.js",
+    "dev:server": "nodemon server/babel-register.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "aiyov",

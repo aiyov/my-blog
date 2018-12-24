@@ -4,9 +4,9 @@
     "NODE_ENV": "development",
     "BABEL_ENV": "node"
   },
-  "watch": ["src"],
+  "watch": ["src", "server"],
   "ignore": ["static"],
   "execMap":{
-    "js": "babel-node --ignore=dist"
+    "js": "babel-node"
   }
 }
