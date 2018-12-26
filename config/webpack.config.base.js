@@ -12,7 +12,7 @@ module.exports = {
   output: {
     filename: utils.assetsPath('js/[name].bundle.[chunkhash:7].js'),
     path: path.resolve(__dirname, '../dist'),
-    publicPath: './'
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -61,8 +61,8 @@ module.exports = {
       publicPath: '/'
     }),
     new MinCssExtractPlugin({
-      filename: utils.assetsPath("[name].css"),
-      chunkFilename: utils.assetsPath("[id].css")
+      filename: utils.assetsPath("css/[name].css"),
+      chunkFilename: utils.assetsPath("css/[id].css")
     }),
     new CopyWebpackPlugin([
       {

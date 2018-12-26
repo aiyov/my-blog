@@ -3,6 +3,7 @@ import routers from './routers.js'
 import {renderRoutes} from 'react-router-config'
 import {connect} from 'react-redux';
 import {changeColor} from '../store/actions/paint.js';
+import "./index.css";
 
 class AppShow extends React.Component {
     constructor(props) {
