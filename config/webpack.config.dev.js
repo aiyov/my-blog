@@ -8,7 +8,7 @@ module.exports = merge(baseConfig, {
     devtool: "inline-source-map",
     plugins: [
         new HtmlWebpackPlugin({
-            template: './index.html'
+            template: path.resolve(__dirname, '../index.html')
         }),
     ],
     devServer: {

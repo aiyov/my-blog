@@ -74,7 +74,7 @@ async function devRender(ctx) {
               <noscript>
               You need to enable JavaScript to run this app.
               </noscript>
-              <div id="root">${html}</div>
+              <div id="root" style="height: 100%">${html}</div>
               <script>
                 window.__INITIAL_STATE__ = ${JSON.stringify(store.getState())}
               </script> 
