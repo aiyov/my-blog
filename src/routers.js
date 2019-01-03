@@ -1,5 +1,5 @@
 import React from 'react';
-import Name from '../src/view/name/name.js';
+import Head from './view/header/header.js';
 import Age from '../src/view/age/age.js';
 import AgeDetail from '../src/view/age/agedetail.js';
 import Root from '../src/view/root/index.js';
@@ -11,16 +11,10 @@ const routes = [
     data: Root.getData,
     routes: [
       {
-        path: '/',
+        path: '/header/',
         exact: true,
-        component: Name,
-        data: Name.getData
-      },
-      {
-        path: '/name/',
-        exact: true,
-        component: Name,
-        data: Name.getData
+        component: Head,
+        data: Head.getData
       },
       {
         path: '/age/',

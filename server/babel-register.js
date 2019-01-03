@@ -9,6 +9,15 @@ require('@babel/register')({
         useBuiltIns: "usage"   // <--- not sure if this work
       }
     ]
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
+    [
+      "import-inspector",
+      {
+        "serverSideRequirePath": true
+      }
+    ]
   ]
 });
 require('./index');
