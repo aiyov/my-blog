@@ -10,7 +10,7 @@ module.exports = {
     app: './src/index.js',
   },
   output: {
-    filename: utils.assetsPath('js/[header].bundle.[chunkhash:7].js'),
+    filename: utils.assetsPath('js/[name].bundle.[chunkhash:7].js'),
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/'
   },
@@ -25,14 +25,17 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[header].[hash:7].[ext]')
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
+          options: {
+            cacheDirectory: true
+          }
         }
       },
       {
@@ -40,7 +43,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('media/[header].[hash:7].[ext]')
+          name: utils.assetsPath('media/[name].[hash:7].[ext]')
         }
       },
       {
@@ -48,7 +51,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[header].[hash:7].[ext]')
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
     ]
@@ -61,7 +64,7 @@ module.exports = {
       publicPath: '/'
     }),
     new MinCssExtractPlugin({
-      filename: utils.assetsPath("css/[header].css"),
+      filename: utils.assetsPath("css/[name].css"),
       chunkFilename: utils.assetsPath("css/[id].css")
     }),
     new CopyWebpackPlugin([
