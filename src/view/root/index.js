@@ -1,6 +1,7 @@
 import React from 'react';
 import {Layout, Row, Col} from 'antd';
 const {Header, Footer, Content} = Layout;
+import {Helmet} from "react-helmet";
 import Head from '../header/header.js';
 import {connect} from 'react-redux';
 import {changeColor} from "../../../store/actions/paint";
@@ -15,12 +16,15 @@ class RootShow extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.todos)
   }
 
   render() {
     return (
       <Layout style={{height: '100%'}}>
+          <Helmet>
+              <meta charSet="utf-8"/>
+              <title>my blog</title>
+          </Helmet>
         <Header style={{background: '#fff'}}>
           <Head />
         </Header>

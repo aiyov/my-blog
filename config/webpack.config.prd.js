@@ -8,40 +8,49 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const baseConfig = require('./webpack.config.base.js');
 
 module.exports = merge(baseConfig, {
-  mode: 'production',
-  optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true // set to true if you want JS source maps
-      }),
-      new OptimizeCSSAssetsPlugin({})
-    ],
-    splitChunks: {
-      chunks: 'all',
-      cacheGroups: {
-        vendors: {
-          name: 'vender',
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10
+    mode: 'production',
+    externals: {
+        // 'antd': 'antd',/*不推荐，无法使用按需加载*/
+        'react': 'react',
+        'react-dom': 'react-dom',
+        'react-redux': 'react-redux',
+        'react-router-config': 'react-router-config',
+        'react-router-dom': 'react-router-dom',
+        'redux': 'redux'
+    },
+    optimization: {
+        minimizer: [
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: true // set to true if you want JS source maps
+            }),
+            new OptimizeCSSAssetsPlugin({})
+        ],
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                vendors: {
+                    name: 'vender',
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true
+                }
+            }
         },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true
-        }
-      }
+        runtimeChunk: {
+            name: "manifest"
+        },
     },
-    runtimeChunk: {
-      name: "manifest"
-    },
-  },
-  plugins: [
-    new CleanWebpackPlugin([path.resolve(__dirname, '../dist')], {
-      root: path.resolve(__dirname, '../'),
-      verbose: true
-    }),
-    new webpack.HashedModuleIdsPlugin(),
-  ]
+    plugins: [
+        new CleanWebpackPlugin([path.resolve(__dirname, '../dist')], {
+            root: path.resolve(__dirname, '../'),
+            verbose: true
+        }),
+        new webpack.HashedModuleIdsPlugin(),
+    ]
 })

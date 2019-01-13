@@ -1,7 +1,7 @@
 {
   "verbose": false,
   "env": {
-    "NODE_ENV": "development",
+    "NODE_ENV": "production",
     "BABEL_ENV": "node"
   },
   "watch": ["server"],

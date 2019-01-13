@@ -6,7 +6,6 @@ module.exports = {
   entry: {
     app: path.resolve(__dirname, '../server/index.js'),
   },
-  // externals: Object.keys(require('../package.json').dependencies),
   output: {
     filename: 'server.js',
     path: path.resolve(__dirname, '../dist'),

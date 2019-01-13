@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "set NODE_ENV=production&&nodemon --exec babel-node server/index.js",
+    "server": "set NODE_ENV=production&&nodemon server/babel-register.js",
     "build": "webpack --config config/webpack.config.prd.js",
     "build:server": "webpack --config config/webpack.config.server.js",
     "dev": "webpack-dev-server --config config/webpack.config.dev.js",

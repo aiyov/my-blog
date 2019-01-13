@@ -5,7 +5,7 @@ import {StaticRouter} from 'react-router-dom';
 import Helmet from 'react-helmet';
 import Router from 'koa-router';
 import {Provider} from 'react-redux';
-// import App from '../../src/App.js';
+import App from '../../src/App.js';
 import configStore from '../../store/store/index.js';
 import {matchRoutes} from 'react-router-config';
 import routes from '../../src/routers.js';
@@ -40,24 +40,23 @@ async function devRender(ctx) {
     var js = [];
     var css = [];
     for (var manifest in staticPath) {
-        if (/\.js$/.test(manifest) && manifest !== 'app.js' && manifest !== 'vendor.js' && manifest !== 'manifest.js') {
+        if (/\.js$/.test(manifest) && manifest !== 'app.js' && manifest !== 'vender.js' && manifest !== 'manifest.js') {
             js.push(`<script src="${staticPath[manifest]}"></script>`)
         } else if (/\.css$/.test(manifest)) {
             css.push(`<link rel="stylesheet" href="${staticPath[manifest]}">`)
         }
     }
-    /*const context = {}
+    const context = {}
     const html = ReactDOMServer.renderToString(
         <StaticRouter location={ctx.req.url} context={context}>
             <Provider store={store}>
                 <App/>
             </Provider>
         </StaticRouter>
-    );*/
-    const html = getHtml(ctx);
-    /*if (context.status === 404) {
+    );
+    if (context.status === 404) {
         ctx.status = 404
-    };*/
+    };
 
     const helmet = Helmet.renderStatic();
     ctx.body = `<!DOCTYPE html>
@@ -94,20 +93,6 @@ function getStaticPath() {
             })
             .catch(reject)
     })
-}
-
-function getHtml(ctx) {
-    const App = require('../../src/App.js').default;
-    const context = {}
-    return (
-        ReactDOMServer.renderToString(
-            <StaticRouter location={ctx.req.url} context={context}>
-                <Provider store={store}>
-                    <App/>
-                </Provider>
-            </StaticRouter>
-        )
-    )
 }
 
 module.exports = router;
