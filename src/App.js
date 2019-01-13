@@ -1,6 +1,7 @@
 import React from 'react';
-import routers from './routers.js'
-import {renderRoutes} from 'react-router-config'
+import routers from './routers.js';
+import { hot } from 'react-hot-loader/root';
+import {renderRoutes} from 'react-router-config';
 import {connect} from 'react-redux';
 import {changeColor} from '../store/actions/paint.js';
 
@@ -34,4 +35,4 @@ const App = connect(
     mapDispatchToProps
 )(AppShow)
 
-export default App
+export default hot(App)

@@ -9,11 +9,6 @@ module.exports = {
   entry: {
     app: './src/index.js',
   },
-  output: {
-    filename: utils.assetsPath('js/[name].bundle.[chunkhash:7].js'),
-    path: path.resolve(__dirname, '../dist'),
-    publicPath: '/'
-  },
   module: {
     rules: [
       {

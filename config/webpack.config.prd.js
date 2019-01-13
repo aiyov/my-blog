@@ -9,6 +9,11 @@ const baseConfig = require('./webpack.config.base.js');
 
 module.exports = merge(baseConfig, {
     mode: 'production',
+    output: {
+        filename: utils.assetsPath('js/[name].bundle.[chunkhash:7].js'),
+        path: path.resolve(__dirname, '../dist'),
+        publicPath: '/'
+    },
     externals: {
         // 'antd': 'antd',/*不推荐，无法使用按需加载*/
         'react': 'react',

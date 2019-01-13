@@ -22,6 +22,7 @@
         // `style: true` 会加载 less 文件
       }
     ],
+    ["react-hot-loader/babel"],
     "@babel/plugin-syntax-dynamic-import",
     [
       "import-inspector",
