@@ -11,7 +11,7 @@ import configStore from '../../store/store/index.js';
 import {matchRoutes} from 'react-router-config';
 import serverEntry from '../../dist/server-entry.js';
 import routes from '../../src/routers.js';
-import serverRender from './render.js'
+import render from './render.js'
 
 let store = null;
 
@@ -40,7 +40,7 @@ function serverRender(app) {
         return next()
       }
       await preloadData(ctx)
-      await serverRender(serverEntry, store, ctx)
+      await render(serverEntry, store, ctx)
     })
   })
 }
