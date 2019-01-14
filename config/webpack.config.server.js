@@ -1,7 +1,5 @@
 const path = require('path');
 const utils = require('./utils.js');
-const MinCssExtractPlugin = require('mini-css-extract-plugin');
-const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 module.exports = {
   target: 'node',
@@ -18,7 +16,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [MinCssExtractPlugin.loader, 'css-loader'],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -56,13 +54,4 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new WebpackAssetsManifest({
-      publicPath: '/'
-    }),
-    new MinCssExtractPlugin({
-      filename: utils.assetsPath("css/[name].css"),
-      chunkFilename: utils.assetsPath("css/[id].css")
-    })
-  ]
 }
