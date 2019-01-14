@@ -1,4 +1,3 @@
-import asyncBootstrap from 'react-async-bootstrapper'
 import template from './template.js';
 import ReactDOMServer from 'react-dom/server';
 

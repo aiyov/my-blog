@@ -1,12 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
 import MemoryFs from 'memory-fs';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import {StaticRouter} from 'react-router-dom';
-import {Provider} from 'react-redux';
-import App from '../../src/App.js';
-import template from './template.js';
 import Router from 'koa-router';
 import configStore from '../../store/store/index.js';
 import {matchRoutes} from 'react-router-config';
@@ -69,24 +63,7 @@ router.get('*', async (ctx, next) => {
     }
   });
   await Promise.all(promise);
-  console.log(serverRender)
   await serverRender(serverBundle, store, ctx)
-  // await devRender(ctx)
 })
-
-async function devRender(ctx) {
-  const context = {}
-  const html = ReactDOMServer.renderToString(
-    <StaticRouter location={ctx.req.url} context={context}>
-      <Provider store={store}>
-        <App/>
-      </Provider>
-    </StaticRouter>
-  );
-  if (context.status === 404) {
-    ctx.status = 404
-  };
-  ctx.body = await template(html, store);
-}
 
 module.exports = router;
