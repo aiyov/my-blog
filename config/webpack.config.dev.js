@@ -17,7 +17,7 @@ module.exports = merge(baseConfig, {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../index.html')
         }),
-        // new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin()
     ],
     devServer: {
         contentBase: path.join(__dirname, '../dist'),

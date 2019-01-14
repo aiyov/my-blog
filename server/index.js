@@ -20,7 +20,7 @@ if (!isDev) {
     serverRender(app)
 } else {
     app.use(staticRouter.routes(), staticRouter.allowedMethods())
-    app.use(proxy('/static', {
+    app.use(proxy('/', {
         target: 'http://localhost:3111',
         logs: false
     }))

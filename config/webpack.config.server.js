@@ -1,13 +1,16 @@
 const path = require('path');
+const utils = require('./utils.js');
 const MinCssExtractPlugin = require('mini-css-extract-plugin');
+const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 module.exports = {
   target: 'node',
+  mode: 'development',
   entry: {
-    app: path.resolve(__dirname, '../server/index.js'),
+    app: path.resolve(__dirname, '../src/server-entry.js'),
   },
   output: {
-    filename: 'server.js',
+    filename: 'server-entry.js',
     path: path.resolve(__dirname, '../dist'),
     libraryTarget: 'commonjs2'
   },
@@ -15,14 +18,51 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [MinCssExtractPlugin.loader, 'css-loader'],
+      },
+      {
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        }
       },
       {
         test: /\.js$/,
+        exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
+          options: {
+            cacheDirectory: true
+          }
+        }
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('media/[name].[hash:7].[ext]')
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
     ]
   },
+  plugins: [
+    new WebpackAssetsManifest({
+      publicPath: '/'
+    }),
+    new MinCssExtractPlugin({
+      filename: utils.assetsPath("css/[name].css"),
+      chunkFilename: utils.assetsPath("css/[id].css")
+    })
+  ]
 }

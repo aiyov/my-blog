@@ -1,98 +1,92 @@
+import path from 'path';
+import webpack from 'webpack';
+import MemoryFs from 'memory-fs';
 import React from 'react';
-import axios from 'axios';
 import ReactDOMServer from 'react-dom/server';
 import {StaticRouter} from 'react-router-dom';
-import Helmet from 'react-helmet';
-import Router from 'koa-router';
 import {Provider} from 'react-redux';
 import App from '../../src/App.js';
+import template from './template.js';
+import Router from 'koa-router';
 import configStore from '../../store/store/index.js';
 import {matchRoutes} from 'react-router-config';
 import routes from '../../src/routers.js';
+import serverRender  from './render.js'
+import serverConfig from '../../config/webpack.config.server.js';
+import NativeModule from 'module';
+import vm from 'vm';
+
+let store = null;
+let serverBundle
 
 const router = Router();
+const mfs = new MemoryFs;
+const serverCompiler = webpack(serverConfig);
+serverCompiler.outputFileSystem = mfs;
 
-var store = null;
+const getModuleFromString = (bundle, filename) => {
+  const m = { exports: {} }
+  const wrapper = NativeModule.wrap(bundle)
+  const script = new vm.Script(wrapper, {
+    filename: filename,
+    displayErrors: true,
+  })
+  const result = script.runInThisContext()
+  result.call(m.exports, m.exports, require, m)
+  return m
+}
+
+serverCompiler.watch({}, (err, stats) => {
+  if (err) throw err
+  stats = stats.toJson()
+  stats.errors.forEach(err => console.error(err))
+  stats.warnings.forEach(warn => console.warn(warn))
+
+  const bundlePath = path.join(
+    serverConfig.output.path,
+    serverConfig.output.filename
+  )
+  const bundle = mfs.readFileSync(bundlePath, 'utf-8')
+  const m = getModuleFromString(bundle, 'server-entry.js')
+  serverBundle = m.exports
+})
 
 router.get('*', async (ctx, next) => {
-    if (ctx.req.url.startsWith('/static/')) {
-        return next()
+  if (ctx.req.url.startsWith('/static/') || ctx.req.url.indexOf('hot-update') !== -1) {
+    return next()
+  }
+  store = configStore();
+  const matchedRoutes = matchRoutes(routes, ctx.req.url);
+  const promise = [];
+  /*收集所有匹配路由的加载数据的方法*/
+  matchedRoutes.forEach((route) => {
+    if (route.route.data) {
+      const task = new Promise((resolve, reject) => {
+        Promise.resolve(route.route.data(store)).then(resolve).catch(resolve)
+        /*防止错误阻塞页面加载*/
+      });
+      promise.push(task)
     }
-    store = configStore();
-    const matchedRoutes = matchRoutes(routes, ctx.req.url);
-    const promise = [];
-    /*收集所有匹配路由的加载数据的方法*/
-    matchedRoutes.forEach((route) => {
-        if (route.route.data) {
-            const task = new Promise((resolve, reject) => {
-                Promise.resolve(route.route.data(store)).then(resolve).catch(resolve)
-                /*防止错误阻塞页面加载*/
-            });
-            promise.push(task)
-        }
-    });
-    await Promise.all(promise);
-    await devRender(ctx)
+  });
+  await Promise.all(promise);
+  console.log(serverRender)
+  await serverRender(serverBundle, store, ctx)
+  // await devRender(ctx)
 })
 
 async function devRender(ctx) {
-    const staticPath = await getStaticPath();
-    var js = [];
-    var css = [];
-    for (var manifest in staticPath) {
-        if (/\.js$/.test(manifest) && manifest !== 'app.js' && manifest !== 'vender.js' && manifest !== 'manifest.js') {
-            js.push(`<script src="${staticPath[manifest]}"></script>`)
-        } else if (/\.css$/.test(manifest)) {
-            css.push(`<link rel="stylesheet" href="${staticPath[manifest]}">`)
-        }
-    }
-    const context = {}
-    const html = ReactDOMServer.renderToString(
-        <StaticRouter location={ctx.req.url} context={context}>
-            <Provider store={store}>
-                <App/>
-            </Provider>
-        </StaticRouter>
-    );
-    if (context.status === 404) {
-        ctx.status = 404
-    };
-
-    const helmet = Helmet.renderStatic();
-    ctx.body = `<!DOCTYPE html>
-      <html lang="en">
-          <head>
-              <meta charset="utf-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-              <meta name="theme-color" content="#000000">
-              <link rel="icon" href="/static/favicon.ico" type="image/vnd.microsoft.icon">
-              ${css.join('')}
-              ${helmet.title.toString()}
-          </head>
-          <body>
-              <noscript>
-              You need to enable JavaScript to run this app.
-              </noscript>
-              <div id="root" style="height: 100%">${html}</div>
-              <script>
-                window.__INITIAL_STATE__ = ${JSON.stringify(store.getState())}
-              </script> 
-              ${staticPath["manifest.js"] ? `<script src="${staticPath["manifest.js"]}"></script>` : ''}
-              ${staticPath["vender.js"] ? `<script src="${staticPath["vender.js"]}"></script>` : ''}
-              ${staticPath["app.js"] ? `<script src="${staticPath["app.js"]}"></script>` : ''}
-              ${js.join('')}
-          </body>
-      </html>`
-}
-
-function getStaticPath() {
-    return new Promise((resolve, reject) => {
-        axios.get('http://localhost:3111/manifest.json')
-            .then(res => {
-                resolve(res.data);
-            })
-            .catch(reject)
-    })
+  const context = {}
+  const html = ReactDOMServer.renderToString(
+    <StaticRouter location={ctx.req.url} context={context}>
+      <Provider store={store}>
+        <App/>
+      </Provider>
+    </StaticRouter>
+  );
+  if (context.status === 404) {
+    ctx.status = 404
+  };
+  ctx.body = await template(html, store);
 }
 
 module.exports = router;
