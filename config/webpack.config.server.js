@@ -12,11 +12,12 @@ module.exports = {
     path: path.resolve(__dirname, '../dist'),
     libraryTarget: 'commonjs2'
   },
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ['iso-morphic-style-loader', 'css-loader'],
       },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
