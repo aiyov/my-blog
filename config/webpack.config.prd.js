@@ -16,12 +16,12 @@ module.exports = merge(baseConfig, {
     },
     externals: {
         // 'antd': 'antd',/*不推荐，无法使用按需加载*/
-        'react': 'react',
+        /*'react': 'react',
         'react-dom': 'react-dom',
         'react-redux': 'react-redux',
         'react-router-config': 'react-router-config',
         'react-router-dom': 'react-router-dom',
-        'redux': 'redux'
+        'redux': 'redux'*/
     },
     optimization: {
         minimizer: [

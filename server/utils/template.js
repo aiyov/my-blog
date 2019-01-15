@@ -1,8 +1,6 @@
-import axios from 'axios';
 import Helmet from 'react-helmet';
-export default async (html, store)=> {
+export default async (html, store, staticPath)=> {
   const helmet = Helmet.renderStatic();
-  const staticPath = await getStaticPath();
   var js = [];
   var css = [];
   for (var manifest in staticPath) {
@@ -38,14 +36,4 @@ export default async (html, store)=> {
           </body>
       </html>`
   )
-}
-
-function getStaticPath() {
-  return new Promise((resolve, reject) => {
-    axios.get('http://localhost:3111/manifest.json')
-      .then(res => {
-        resolve(res.data);
-      })
-      .catch(reject)
-  })
 }

@@ -3,7 +3,7 @@ const utils = require('./utils.js');
 
 module.exports = {
   target: 'node',
-  mode: 'development',
+  mode: 'production',
   entry: {
     app: path.resolve(__dirname, '../src/server-entry.js'),
   },

@@ -1,19 +1,15 @@
-import path from 'path';
-import webpack from 'webpack';
-import MemoryFs from 'memory-fs';
-import React from 'react';
-import {StaticRouter} from 'react-router-dom';
-import Router from 'koa-router';
-import configStore from '../../store/store/index.js';
-import {matchRoutes} from 'react-router-config';
-import routes from '../../src/routers.js';
-import serverRender  from './render.js'
-import serverConfig from '../../config/webpack.config.server.js';
-import NativeModule from 'module';
 import vm from 'vm';
+import path from 'path';
+import React from 'react';
+import webpack from 'webpack';
+import Router from 'koa-router';
+import MemoryFs from 'memory-fs';
+import NativeModule from 'module';
+import {devRender, preloadData}  from './utils.js';
+import serverConfig from '../../config/webpack.config.server.js';
 
 let store = null;
-let serverBundle
+let serverBundle;
 
 const router = Router();
 const mfs = new MemoryFs;
@@ -33,6 +29,7 @@ const getModuleFromString = (bundle, filename) => {
 }
 
 serverCompiler.watch({}, (err, stats) => {
+    console.log('我更新；额')
   if (err) throw err
   stats = stats.toJson()
   stats.errors.forEach(err => console.error(err))
@@ -51,21 +48,8 @@ router.get('*', async (ctx, next) => {
   if (ctx.req.url.startsWith('/static/') || ctx.req.url.indexOf('hot-update') !== -1) {
     return next()
   }
-  store = configStore();
-  const matchedRoutes = matchRoutes(routes, ctx.req.url);
-  const promise = [];
-  /*收集所有匹配路由的加载数据的方法*/
-  matchedRoutes.forEach((route) => {
-    if (route.route.data) {
-      const task = new Promise((resolve, reject) => {
-        Promise.resolve(route.route.data(store)).then(resolve).catch(resolve)
-        /*防止错误阻塞页面加载*/
-      });
-      promise.push(task)
-    }
-  });
-  await Promise.all(promise);
-  await serverRender(serverBundle, store, ctx)
+  store = await preloadData(ctx, store);
+  await devRender(serverBundle, store, ctx)
 })
 
 module.exports = router;
