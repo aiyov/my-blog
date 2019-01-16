@@ -10,7 +10,7 @@ class HeaderShow extends React.Component {
   render() {
     return (
       <Row type="flex" justify="center">
-        <Col span={18}>AIYOV123456789</Col>
+        <Col span={18}>AIYOV1234</Col>
       </Row>
     )
   }

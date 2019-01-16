@@ -28,8 +28,9 @@ const getModuleFromString = (bundle, filename) => {
   return m
 }
 
-serverCompiler.watch({}, (err, stats) => {
-    console.log('我更新；额')
+
+const compilerWatching =  serverCompiler.watch({infoVerbosity: 'verbose'}, (err, stats) => {
+  console.log('打包完毕!!!')
   if (err) throw err
   stats = stats.toJson()
   stats.errors.forEach(err => console.error(err))

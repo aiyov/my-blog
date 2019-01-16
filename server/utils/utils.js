@@ -20,6 +20,7 @@ function devRender(bundle, store, ctx) {
     };
     const path = await getStaticPath()
     const html = ReactDOMServer.renderToString(app)
+    console.log(html)
     ctx.body = await template(html, store, path);
     resolve()
   }).catch((error)=>{
