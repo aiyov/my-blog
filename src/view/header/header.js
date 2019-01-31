@@ -1,7 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Row, Col} from 'antd';
+import {Row, Col, Menu} from 'antd';
 import {changeName} from '../../../store/actions/paint.js';
+
+const SubMenu = Menu.SubMenu;
 
 class HeaderShow extends React.Component {
   constructor(props) {
@@ -10,7 +12,14 @@ class HeaderShow extends React.Component {
   render() {
     return (
       <Row type="flex" justify="center">
-        <Col span={18}>AIYOV1234</Col>
+        <Col span={20}>
+          <h1 style={{display: 'inline'}}>AIYOV</h1>
+          <Menu mode="horizontal">
+            <Menu.Item key="home">首页</Menu.Item>
+            <Menu.Item key="archived">归档</Menu.Item>
+            <Menu.Item key="about">关于</Menu.Item>
+          </Menu>
+        </Col>
       </Row>
     )
   }
