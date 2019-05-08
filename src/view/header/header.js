@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Row, Col} from 'antd';
+import {Row, Col, Menu, Icon} from 'antd';
 import {changeName} from '../../../store/actions/paint.js';
 
 class HeaderShow extends React.Component {
@@ -9,8 +9,17 @@ class HeaderShow extends React.Component {
   }
   render() {
     return (
-      <Row type="flex" justify="center">
-        <Col span={18}>AIYOV123456789</Col>
+      <Row type="flex" justify="center" style={{height: '100%'}}>
+        <Col span={20}>
+            <Menu mode="horizontal" style={{height: '100%'}}>
+                <Menu.Item>首页</Menu.Item>
+                <Menu.Item>归档</Menu.Item>
+                <Menu.Item>关于</Menu.Item>
+                <Menu.Item>
+                    <Icon type="search" />
+                </Menu.Item>
+            </Menu>
+        </Col>
       </Row>
     )
   }

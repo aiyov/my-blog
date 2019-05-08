@@ -29,7 +29,6 @@ const getModuleFromString = (bundle, filename) => {
 }
 
 serverCompiler.watch({}, (err, stats) => {
-    console.log('我更新；额')
   if (err) throw err
   stats = stats.toJson()
   stats.errors.forEach(err => console.error(err))

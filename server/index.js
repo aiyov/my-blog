@@ -4,6 +4,7 @@ import assethook from 'asset-require-hook';
 assethook({
     extensions: ['png', 'jpg']
 });
+import path from 'path';
 import koa from 'koa2';
 import proxy from 'koa-proxies';
 import React from 'react';
@@ -13,10 +14,11 @@ import staticRouter from './utils/dev-render.js';
 import serverRender from './utils/server-render';
 const app = new koa();
 const isDev = process.env.NODE_ENV === 'development';
+console.log(isDev);
 if (!isDev) {
-    /*app.use(staticCache(path.resolve(__dirname, '../dist'), {
+    app.use(staticCache(path.resolve(__dirname, '../dist'), {
         maxAge: 0
-    }))*/
+    }))
     serverRender(app)
 } else {
     app.use(staticRouter.routes(), staticRouter.allowedMethods())
