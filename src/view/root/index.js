@@ -1,10 +1,9 @@
 import React from 'react';
-import {Layout, Row, Col} from 'antd';
-const {Header, Footer, Content} = Layout;
 import {Helmet} from "react-helmet";
 import Head from '../header/header.js';
 import {connect} from 'react-redux';
 import {changeColor} from "../../../store/actions/paint";
+import './index.css';
 
 class RootShow extends React.Component {
   constructor(props) {
@@ -20,17 +19,13 @@ class RootShow extends React.Component {
 
   render() {
     return (
-      <Layout style={{height: '100%'}}>
+      <div style={{height: '100%'}}>
           <Helmet>
               <meta charSet="utf-8"/>
               <title>my blog</title>
           </Helmet>
-        <Header style={{background: '#fff'}}>
           <Head />
-        </Header>
-        <Content style={{background: '#ccc'}}>Content</Content>
-        <Footer style={{background: '#fff'}}>Footer</Footer>
-      </Layout>
+      </div>
     )
   }
 }
