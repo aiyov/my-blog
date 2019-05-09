@@ -6,7 +6,7 @@
   "scripts": {
     "server": "webpack --config config/webpack.config.server.js",
     "build": "webpack --config config/webpack.config.prd.js",
-    "build:server": "set NODE_ENV=production&&nodemon server/babel-register.js",
+    "build:server": "pm2 start ecosystem.config.js --interpreter babel-node",
     "dev": "webpack-dev-server --config config/webpack.config.dev.js",
     "dev:server": "set NODE_ENV=development&&nodemon server/babel-register.js",
     "test": "echo \"Error: no test specified\" && exit 1"
